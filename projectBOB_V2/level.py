@@ -17,6 +17,7 @@ class Level:
         player_layout = import_csv_layout(level_data['player'])
         self.player = pygame.sprite.GroupSingle()
         self.player_setup(player_layout)
+        self.alive = True
 
         # boss
         boss_layout = import_csv_layout(level_data['boss'])
@@ -51,6 +52,9 @@ class Level:
                 if val == '0':
                     sprite = Player((x,y),self.display_surface)
                     self.player.add(sprite)
+
+    def player_death(self):
+        self.alive = False
 
     def boss_setup(self,layout):
         for row_index, row in enumerate(layout):
@@ -120,15 +124,16 @@ class Level:
             player.speed = 5
 
     def run(self):
-        self.terrain_sprites.draw(self.display_surface)
-        self.terrain_sprites.update(self.world_shift)
+        if self.alive:
+            self.terrain_sprites.draw(self.display_surface)
+            self.terrain_sprites.update(self.world_shift)
 
-        self.boss_sprites.draw(self.display_surface)
-        self.boss_sprites.update(self.world_shift)
+            self.boss_sprites.draw(self.display_surface)
+            self.boss_sprites.update(self.world_shift)
 
-        # player sprites
-        self.player.update()
-        self.horizontal_movement_collision()
-        self.vertical_movement_collision()
-        self.scroll_x()
-        self.player.draw(self.display_surface)
+            # player sprites
+            self.player.update()
+            self.horizontal_movement_collision()
+            self.vertical_movement_collision()
+            self.scroll_x()
+            self.player.draw(self.display_surface)

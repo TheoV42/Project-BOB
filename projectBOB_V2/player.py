@@ -99,3 +99,7 @@ class Player(pygame.sprite.Sprite):
 		self.get_input()
 		self.get_status()
 		self.animate()
+
+
+
+
